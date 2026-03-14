@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Narsimharaj Mallela — RTL Design Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #080b0e;
+  --surface:   #0d1117;
+  --panel:     #111820;
+  --border:    #1a2430;
+  --border2:   #223040;
+  --green:     #00e5a0;
+  --green-dim: #009f70;
+  --amber:     #ffb340;
+  --blue:      #4da6ff;
+  --red:       #ff4e6a;
+  --text:      #c8d8ea;
+  --muted:     #7a90a0;
+  --dim:       #445560;
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'IBM Plex Sans', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* grid bg */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(0,229,160,.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,229,160,.02) 1px, transparent 1px);
+  background-size: 44px 44px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 200;
+  height: 50px;
+  background: rgba(8,11,14,.93);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 44px;
+}
+.nav-logo { color: var(--green); font-weight: 600; font-size: 13px; letter-spacing: .08em; text-decoration: none; }
+.nav-logo span { color: var(--dim); font-weight: 300; }
+nav ul { list-style: none; display: flex; gap: 28px; }
+nav a { color: var(--muted); text-decoration: none; font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; transition: color .2s; }
+nav a:hover { color: var(--green); }
+
+/* ── LAYOUT ── */
+section {
+  position: relative; z-index: 1;
+  max-width: 920px; margin: 0 auto;
+  padding: 110px 44px 64px;
+}
+
+/* ── HERO ── */
+#hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding-top: 130px; padding-bottom: 80px; }
+
+.hero-pre {
+  font-size: 10.5px; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--green); margin-bottom: 18px;
+  opacity: 0; animation: up .6s .15s forwards;
+}
+.dot {
+  display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green); box-shadow: 0 0 7px var(--green);
+  margin-right: 7px; animation: blink 2s infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+h1 {
+  font-size: clamp(30px,5vw,52px); font-weight: 600; line-height: 1.12;
+  color: #ddeeff; letter-spacing: -.02em; margin-bottom: 10px;
+  opacity: 0; animation: up .6s .3s forwards;
+}
+.hero-role {
+  display: block; font-size: clamp(13px,1.8vw,17px); font-weight: 300;
+  color: var(--muted); letter-spacing: .02em; margin-bottom: 28px;
+  opacity: 0; animation: up .6s .45s forwards;
+}
+.hero-desc {
+  max-width: 560px; font-family: var(--sans); font-size: 14px;
+  color: var(--muted); line-height: 1.85; margin-bottom: 36px;
+  opacity: 0; animation: up .6s .6s forwards;
+}
+.tags {
+  display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 48px;
+  opacity: 0; animation: up .6s .75s forwards;
+}
+.tag {
+  font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+  border: 1px solid var(--border2); color: var(--muted);
+  padding: 4px 10px; border-radius: 2px; transition: border-color .2s, color .2s;
+}
+.tag:hover { border-color: var(--green); color: var(--green); }
+.tag.g { border-color: var(--green-dim); color: var(--green); }
+.tag.a { border-color: #6a4010; color: var(--amber); }
+.tag.b { border-color: #1a406a; color: var(--blue); }
+
+.stats {
+  display: flex; gap: 44px; border-top: 1px solid var(--border); padding-top: 30px;
+  opacity: 0; animation: up .6s .9s forwards;
+}
+.stat-val { font-size: 20px; font-weight: 600; color: var(--green); }
+.stat-lbl { font-size: 9.5px; color: var(--dim); letter-spacing: .12em; text-transform: uppercase; margin-top: 2px; }
+
+@keyframes up { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:none} }
+
+/* ── SECTION HEADER ── */
+.sec-hdr { display: flex; align-items: center; gap: 14px; margin-bottom: 44px; }
+.sec-num { color: var(--green); font-size: 10.5px; letter-spacing: .1em; }
+h2 { font-size: 20px; font-weight: 500; color: #ddeeff; letter-spacing: -.01em; }
+.sec-line { flex: 1; height: 1px; background: var(--border); }
+
+/* ── PROJECT CARDS ── */
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 4px; margin-bottom: 28px; overflow: hidden;
+  transition: border-color .25s;
+}
+.card:hover { border-color: var(--border2); }
+
+.card-hdr {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  padding: 22px 26px 18px; border-bottom: 1px solid var(--border);
+  cursor: pointer; gap: 14px; user-select: none;
+}
+.card-hdr-l { flex: 1; }
+.card-id { font-size: 9.5px; color: var(--dim); letter-spacing: .16em; text-transform: uppercase; margin-bottom: 5px; }
+h3 { font-size: 15px; font-weight: 500; color: #cce0ff; margin-bottom: 5px; line-height: 1.3; }
+.card-sub { font-size: 10.5px; color: var(--dim); font-family: var(--sans); }
+.card-ico { color: var(--green); font-size: 20px; line-height: 1; transition: transform .3s; flex-shrink: 0; margin-top: 1px; }
+.card.open .card-ico { transform: rotate(45deg); }
+
+.card-body { display: none; padding: 26px; }
+.card.open .card-body { display: block; }
+
+/* ── SUBSEC ── */
+.sub { margin-bottom: 26px; }
+.sub-ttl {
+  font-size: 9.5px; color: var(--green); letter-spacing: .16em;
+  text-transform: uppercase; margin-bottom: 10px;
+  padding-bottom: 6px; border-bottom: 1px solid var(--border);
+}
+.sub p, .sub li { font-family: var(--sans); font-size: 13px; color: var(--muted); line-height: 1.8; }
+.sub ul { padding-left: 18px; }
+.sub li { margin-bottom: 3px; }
+
+/* ── CODE ── */
+pre {
+  background: var(--panel); border: 1px solid var(--border);
+  border-left: 3px solid var(--green-dim); border-radius: 2px;
+  padding: 15px 18px; overflow-x: auto;
+  font-size: 11.5px; line-height: 1.85; color: #8eb0cc; margin: 10px 0;
+}
+.kw { color: var(--blue); }
+.cm { color: var(--dim); font-style: italic; }
+.nm { color: var(--green); }
+.st { color: var(--amber); }
+
+/* ── RESULTS GRID ── */
+.rg { display: grid; grid-template-columns: repeat(auto-fill,minmax(150px,1fr)); gap: 10px; margin-top: 10px; }
+.rc {
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: 3px; padding: 12px 14px;
+}
+.rv { font-size: 16px; font-weight: 600; color: var(--green); letter-spacing: -.01em; }
+.rl { font-size: 9px; color: var(--dim); letter-spacing: .12em; text-transform: uppercase; margin-top: 2px; }
+.rc.warn .rv { color: var(--amber); }
+.rc.info .rv { color: var(--blue); }
+
+/* ── MODULES ── */
+.mods { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 8px; }
+.mod {
+  background: var(--panel); border: 1px solid var(--border2);
+  color: var(--blue); font-size: 10.5px; padding: 3px 9px;
+  border-radius: 2px; letter-spacing: .04em;
+}
+
+/* ── WAVEFORM ── */
+.wf {
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: 3px; padding: 18px 16px; margin-top: 10px; overflow-x: auto;
+}
+.wr { display: flex; align-items: center; height: 26px; margin-bottom: 6px; }
+.wl { width: 80px; flex-shrink: 0; font-size: 9.5px; color: var(--muted); letter-spacing: .05em; }
+.wt { flex: 1; height: 18px; }
+.wt svg { width: 100%; height: 18px; }
+
+/* ── SKILLS ── */
+.sg-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(210px,1fr)); gap: 14px; }
+.sg {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 3px; padding: 16px 18px;
+}
+.sg-ttl { font-size: 9px; color: var(--green); letter-spacing: .18em; text-transform: uppercase; margin-bottom: 12px; }
+.si { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+.sn { font-size: 10.5px; color: var(--muted); width: 96px; flex-shrink: 0; }
+.sb { flex: 1; height: 2px; background: var(--border); border-radius: 1px; overflow: hidden; }
+.sf { height: 100%; background: var(--green); border-radius: 1px; transform: scaleX(0); transform-origin: left; }
+.sp { font-size: 9.5px; color: var(--dim); width: 28px; text-align: right; }
+
+/* ── ABOUT ── */
+.ag { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media(max-width:580px){.ag{grid-template-columns:1fr}}
+.ab {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 3px; padding: 18px 20px;
+}
+.ab-ttl { font-size: 9px; color: var(--amber); letter-spacing: .18em; text-transform: uppercase; margin-bottom: 8px; }
+.ab p { font-family: var(--sans); font-size: 13px; color: var(--muted); line-height: 1.85; }
+
+/* ── CONTACT ── */
+.cl { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 10px; }
+.ca {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--muted); text-decoration: none; font-size: 11px;
+  padding: 9px 14px; border-radius: 3px; letter-spacing: .05em;
+  transition: border-color .2s, color .2s;
+}
+.ca:hover { border-color: var(--green); color: var(--green); }
+
+/* ── FOOTER ── */
+footer {
+  position: relative; z-index: 1;
+  border-top: 1px solid var(--border);
+  max-width: 920px; margin: 0 auto;
+  padding: 22px 44px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+footer span { font-size: 9.5px; color: var(--dim); letter-spacing: .1em; }
+
+/* ── NOTE BOX ── */
+.note {
+  margin-top: 12px; font-family: var(--sans); font-size: 11.5px;
+  color: var(--dim); line-height: 1.7; border-left: 2px solid var(--border2);
+  padding-left: 12px;
+}
+
+/* scrollbar */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+@media(max-width:640px){
+  nav{padding:0 18px}
+  nav ul{gap:14px}
+  section{padding:80px 18px 40px}
+  .stats{gap:24px}
+  footer{padding:18px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#hero">NM<span>.rtl</span></a>
+  <ul>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ═══════════ HERO ═══════════ -->
+<section id="hero">
+  <div class="hero-pre"><span class="dot"></span>Open to RTL Design Engineer roles — 2025</div>
+  <h1>Narsimharaj Mallela</h1>
+  <span class="hero-role">RTL Design Engineer &nbsp;·&nbsp; Digital Logic &nbsp;·&nbsp; FPGA Synthesis</span>
+  <p class="hero-desc">
+    RTL Design Engineer with hands-on experience in digital design, FPGA synthesis, and hardware verification.
+    Passionate about building reliable, synthesizable hardware from the ground up —
+    from architecture to timing closure.
+  </p>
+  <div class="tags">
+    <span class="tag g">RISC-V RV32I</span>
+    <span class="tag g">CDC-Safe Design</span>
+    <span class="tag g">AXI4-Stream</span>
+    <span class="tag a">Vivado</span>
+    <span class="tag a">ModelSim</span>
+    <span class="tag b">SystemVerilog</span>
+    <span class="tag b">Verilog</span>
+  </div>
+  <div class="stats">
+    <div>
+      <div class="stat-val">3</div>
+      <div class="stat-lbl">RTL Projects</div>
+    </div>
+    <div>
+      <div class="stat-val">~222 MHz</div>
+      <div class="stat-lbl">RISC-V Fmax</div>
+    </div>
+    <div>
+      <div class="stat-val">198 MHz</div>
+      <div class="stat-lbl">Async FIFO Fmax</div>
+    </div>
+    <div>
+      <div class="stat-val">Artix-7</div>
+      <div class="stat-lbl">Target FPGA</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ PROJECTS ═══════════ -->
+<section id="projects">
+  <div class="sec-hdr">
+    <span class="sec-num">// 01</span>
+    <h2>Projects</h2>
+    <div class="sec-line"></div>
+  </div>
+
+  <!-- ─── RISC-V ─── -->
+  <div class="card" id="c1">
+    <div class="card-hdr" data-card="c1">
+      <div class="card-hdr-l">
+        <div class="card-id">PRJ-001 &nbsp;·&nbsp; Processor Design</div>
+        <h3>RISC-V RV32I Single-Cycle Processor</h3>
+        <div class="card-sub">Verilog RTL &nbsp;·&nbsp; Artix-7 XC7A35T &nbsp;·&nbsp; Vivado 2023.2</div>
+      </div>
+      <span class="card-ico">+</span>
+    </div>
+    <div class="card-body">
+
+      <div class="sub">
+        <div class="sub-ttl">Overview</div>
+        <p>Full implementation of a synthesizable single-cycle RISC-V RV32I processor supporting R-type, I-type,
+        and load/store instructions. The control path is fully combinational; datapath is 32-bit wide throughout.
+        Low device utilization is expected — single-cycle design with a small instruction subset and simple ALU datapath.</p>
+      </div>
+
+      <div class="sub">
+        <div class="sub-ttl">Architecture — Modules</div>
+        <div class="mods">
+          <span class="mod">program_counter</span>
+          <span class="mod">instr_memory</span>
+          <span class="mod">reg_file</span>
+          <span class="mod">alu</span>
+          <span class="mod">control_unit</span>
+          <span class="mod">data_memory</span>
+          <span class="mod">sign_extend</span>
+          <span class="mod">branch_logic</span>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sub-ttl">RTL — Control Decoder (excerpt)</div>
+<pre><span class="kw">module</span> control_unit (
+  <span class="kw">input</span>  logic [<span class="nm">6:0</span>] opcode,
+  <span class="kw">input</span>  logic [<span class="nm">2:0</span>] funct3,
+  <span class="kw">input</span>  logic [<span class="nm">6:0</span>] funct7,
+  <span class="kw">output</span> logic        reg_write, mem_read, mem_write,
+  <span class="kw">output</span> logic        alu_src, mem_to_reg, branch,
+  <span class="kw">output</span> logic [<span class="nm">1:0</span>] alu_op
+);
+  <span class="cm">// RISC-V RV32I combinational decode — opcode → control signals</span>
+  <span class="kw">always_comb</span> <span class="kw">begin</span>
+    <span class="kw">unique case</span> (opcode)
+      <span class="nm">7'b0110011</span>: <span class="kw">begin</span>  <span class="cm">// R-type (add, sub, and, or, xor...)</span>
+        reg_write=<span class="nm">1</span>; alu_src=<span class="nm">0</span>; mem_to_reg=<span class="nm">0</span>;
+        mem_read=<span class="nm">0</span>; mem_write=<span class="nm">0</span>; branch=<span class="nm">0</span>;
+        alu_op=<span class="nm">2'b10</span>;
+      <span class="kw">end</span>
+      <span class="nm">7'b0000011</span>: <span class="kw">begin</span>  <span class="cm">// I-type load (lw)</span>
+        reg_write=<span class="nm">1</span>; alu_src=<span class="nm">1</span>; mem_to_reg=<span class="nm">1</span>;
+        mem_read=<span class="nm">1</span>; mem_write=<span class="nm">0</span>; branch=<span class="nm">0</span>;
+        alu_op=<span class="nm">2'b00</span>;
+      <span class="kw">end</span>
+      <span class="nm">7'b0100011</span>: <span class="kw">begin</span>  <span class="cm">// S-type store (sw)</span>
+        reg_write=<span class="nm">0</span>; alu_src=<span class="nm">1</span>; mem_to_reg=<span class="nm">0</span>;
+        mem_read=<span class="nm">0</span>; mem_write=<span class="nm">1</span>; branch=<span class="nm">0</span>;
+        alu_op=<span class="nm">2'b00</span>;
+      <span class="kw">end</span>
+      <span class="nm">7'b1100011</span>: <span class="kw">begin</span>  <span class="cm">// B-type branch (beq, bne)</span>
+        reg_write=<span class="nm">0</span>; alu_src=<span class="nm">0</span>; mem_to_reg=<span class="nm">0</span>;
+        mem_read=<span class="nm">0</span>; mem_write=<span class="nm">0</span>; branch=<span class="nm">1</span>;
+        alu_op=<span class="nm">2'b01</span>;
+      <span class="kw">end</span>
+      <span class="cm">// ... addi (7'b0010011), jal (7'b1101111) ...</span>
+    <span class="kw">endcase</span>
+  <span class="kw">end</span>
+<span class="kw">endmodule</span></pre>
+      </div>
+
+      <div class="sub">
+        <div class="sub-ttl">Verification — Instructions Tested</div>
+        <ul>
+          <li>R-type: add, sub, and, or, xor, slt, sll, srl, sra</li>
+          <li>I-type: addi, andi, ori, xori, slti, slli, srli</li>
+          <li>Load / Store: lw, sw</li>
+          <li>Branch: beq, bne, blt, bge</li>
+          <li>Jump: jal, jalr</li>
+          <li>Upper immediate: lui, auipc</li>
+        </ul>
+        <p style="margin-top:8px;">Directed testbench validates each instruction category independently, followed by a self-checking integration test against a golden reference model.</p>
+      </div>
+
+      <div class="sub">
+        <div class="sub-ttl">Synthesis Report — Artix-7 (XC7A35T) · Vivado · RV32I</div>
+        <div class="rg">
+          <div class="rc"><div class="rv">~222 MHz</div><div class="rl">Achieved Fmax</div></div>
+          <div class="rc"><div class="rv">125 MHz</div><div class="rl">Target Clock</div></div>
+          <div class="rc"><div class="rv">+3.531 ns</div><div class="rl">WNS</div></div>
+          <div class="rc"><div class="rv">+0.22 ns</div><div class="rl">WHS</div></div>
+          <div class="rc"><div class="rv">128 / 63,400</div><div class="rl">Slice LUTs (0.20%)</div></div>
+          <div class="rc"><div class="rv">30 / 126,800</div><div class="rl">Slice Registers (0.02%)</div></div>
+          <div class="rc"><div class="rv">16</div><div class="rl">Carry Logic</div></div>
+          <div class="rc"><div class="rv">0</div><div class="rl">Block RAM</div></div>
+          <div class="rc"><div class="rv">0</div><div class="rl">DSP</div></div>
+          <div class="rc warn"><div class="rv">~8 mW</div><div class="rl">Dynamic Power</div></div>
+          <div class="rc warn"><div class="rv">~72 mW</div><div class="rl">Static Power</div></div>
+          <div class="rc warn"><div class="rv">~80 mW</div><div class="rl">Total Power</div></div>
+        </div>
+        <div class="note">
+          Critical path: PC → PC+4 Adder → Branch Target Adder → PC MUX → PC<br>
+          Single-cycle architecture forces all RV32I instructions to complete within one clock cycle, increasing combinational depth. Low utilization reflects the base integer ISA subset and simple ALU datapath.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─── ASYNC FIFO ─── -->
+  <div class="card" id="c2">
+    <div class="card-hdr" data-card="c2">
+      <div class="card-hdr-l">
+        <div class="card-id">PRJ-002 &nbsp;·&nbsp; CDC Design</div>
+        <h3>Asynchronous FIFO — Dual Clock Domain Crossing</h3>
+        <div class="card-sub">Verilog / SystemVerilog &nbsp;·&nbsp; Gray-coded pointers &nbsp;·&nbsp; 2-FF synchronizers &nbsp;·&nbsp; SV Assertions</div>
+      </div>
+      <span class="card-ico">+</span>
+    </div>
+    <div class="card-body">
+
+      <div class="sub">
+        <div class="sub-ttl">The CDC Problem</div>
+        <p>When data crosses between two unrelated clock domains, metastability is a real failure mode — not a theoretical one.
+        A synchronizer with insufficient stages can propagate a metastable output into downstream logic and corrupt state.
+        This FIFO solves CDC by never passing multi-bit binary pointers directly across domains.</p>
+      </div>
+
+      <div class="sub">
+        <div class="sub-ttl">Design Strategy — Gray Coding</div>
+        <p>Binary pointers are converted to Gray code before synchronization. Gray code guarantees that between any two
+        adjacent pointer values, only one bit changes — meaning a 2-FF synchronizer on each bit can settle before
+        being sampled, with no intermediate illegal states possible.</p>
+<pre><span class="cm">// Binary → Gray conversion</span>
+<span class="kw">assign</span> wptr_gray = wptr_bin ^ (wptr_bin >> <span class="nm">1</span>);
+<span class="kw">assign</span> rptr_gray = rptr_bin ^ (rptr_bin >> <span class="nm">1</span>);
+
+<span class="cm">// 2-FF synchronizer — read pointer into write domain</span>
+<span class="kw">always_ff</span> @(<span class="kw">posedge</span> wclk) <span class="kw">begin</span>
+  rptr_sync1 <= rptr_gray;
+  rptr_sync2 <= rptr_sync1;  <span class="cm">// rptr_sync2 is metastability-safe</span>
+<span class="kw">end</span>
+
+<span class="cm">// SystemVerilog assertion — no overflow</span>
+<span class="kw">assert property</span> (@(<span class="kw">posedge</span> wclk) <span class="kw">disable iff</span> (!wrst_n)
+  !(winc && wfull)) <span class="kw">else</span> $error(<span class="st">"FIFO overflow detected"</span>);</pre>
+      </div>
+
+      <div class="sub">
+        <div class="sub-ttl">RTL — Parameterized Interface</div>
+<pre><span class="kw">module</span> async_fifo #(
+  <span class="kw">parameter</span> DATA_WIDTH = <span class="nm">8</span>,
+  <span class="kw">parameter</span> DEPTH      = <span class="nm">16</span>,   <span class="cm">// must be power-of-2</span>
+  <span class="kw">parameter</span> ADDR_WIDTH = <span class="nm">$clog2</span>(DEPTH)
+) (
+  <span class="kw">input</span>  logic                  wclk, wrst_n,
+  <span class="kw">input</span>  logic                  rclk, rrst_n,
+  <span class="kw">input</span>  logic                  winc, rinc,
+  <span class="kw">input</span>  logic [DATA_WIDTH-<span class="nm">1</span>:<span class="nm">0</span>] wdata,
+  <span class="kw">output</span> logic [DATA_WIDTH-<span class="nm">1</span>:<span class="nm">0</span>] rdata,
+  <span class="kw">output</span> logic                  wfull, rempty
+);</pre>
+      </div>
+
+      <div class="sub">
+        <div class="sub-ttl">Architecture — Modules</div>
+        <div class="mods">
+          <span class="mod">fifo_mem (dual-port)</span>
+          <span class="mod">wptr_handler</span>
+          <span class="mod">rptr_handler</span>
+          <span class="mod">sync_r2w (2-FF)</span>
+          <span class="mod">sync_w2r (2-FF)</span>
+          <span class="mod">full_logic</span>
+          <span class="mod">empty_logic</span>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sub-ttl">Full / Empty Flag Logic</div>
+        <p>Full is asserted in the write domain: synchronized read pointer matches write pointer with MSB inverted —
+        indicating write has lapped read. Empty is asserted in the read domain when both pointers are equal.
+        The extra pointer bit (ADDR_WIDTH+1 bits total) eliminates full/empty ambiguity entirely.</p>
+      </div>
+
+      <div class="sub">
+        <div class="sub-ttl">CDC Safety Features</div>
+        <ul>
+          <li>Gray-coded read/write pointers — only 1 bit changes between adjacent values</li>
+          <li>Two-stage flip-flop synchronizers on both crossing directions (r2w and w2r)</li>
+          <li>Full/empty detection fully contained within respective clock domains</li>
+          <li>SystemVerilog assertions for overflow and underflow detection at simulation time</li>
+        </ul>
+      </div>
+
+      <div class="sub">
+        <div class="sub-ttl">Waveform — Signal Behavior (Write then Read)</div>
+        <div class="wf">
+          <div class="wr">
+            <span class="wl">WCLK</span>
+            <div class="wt"><svg viewBox="0 0 480 18" preserveAspectRatio="none">
+              <polyline points="0,16 0,2 20,2 20,16 40,16 40,2 60,2 60,16 80,16 80,2 100,2 100,16 120,16 120,2 140,2 140,16 160,16 160,2 180,2 180,16 200,16 200,2 220,2 220,16 240,16 240,2 260,2 260,16 280,16 280,2 300,2 300,16 320,16 320,2 340,2 340,16 360,16 360,2 380,2 380,16 400,16 400,2 420,2 420,16 440,16 440,2 460,2 460,16 480,16" fill="none" stroke="#4da6ff" stroke-width="1.4"/>
+            </svg></div>
+          </div>
+          <div class="wr">
+            <span class="wl">WINC</span>
+            <div class="wt"><svg viewBox="0 0 480 18" preserveAspectRatio="none">
+              <polyline points="0,16 60,16 60,2 220,2 220,16 480,16" fill="none" stroke="#00e5a0" stroke-width="1.4"/>
+            </svg></div>
+          </div>
+          <div class="wr">
+            <span class="wl">WFULL</span>
+            <div class="wt"><svg viewBox="0 0 480 18" preserveAspectRatio="none">
+              <polyline points="0,16 320,16 320,2 480,2" fill="none" stroke="#ff4e6a" stroke-width="1.4"/>
+            </svg></div>
+          </div>
+          <div class="wr">
+            <span class="wl">RCLK</span>
+            <div class="wt"><svg viewBox="0 0 480 18" preserveAspectRatio="none">
+              <polyline points="0,16 0,2 30,2 30,16 60,16 60,2 90,2 90,16 120,16 120,2 150,2 150,16 180,16 180,2 210,2 210,16 240,16 240,2 270,2 270,16 300,16 300,2 330,2 330,16 360,16 360,2 390,2 390,16 420,16 420,2 450,2 450,16 480,16" fill="none" stroke="#4da6ff" stroke-width="1.4"/>
+            </svg></div>
+          </div>
+          <div class="wr">
+            <span class="wl">REMPTY</span>
+            <div class="wt"><svg viewBox="0 0 480 18" preserveAspectRatio="none">
+              <polyline points="0,2 150,2 150,16 480,16" fill="none" stroke="#ff4e6a" stroke-width="1.4"/>
+            </svg></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sub-ttl">Synthesis Report — Artix-7 (XC7A35T) · Vivado · Dual Clock Domain</div>
+        <div class="rg">
+          <div class="rc"><div class="rv">198.17 MHz</div><div class="rl">Write Domain Fmax</div></div>
+          <div class="rc"><div class="rv">+0.42 ns</div><div class="rl">Write Domain WNS</div></div>
+          <div class="rc"><div class="rv">193.54 MHz</div><div class="rl">Read Domain Fmax</div></div>
+          <div class="rc"><div class="rv">+0.35 ns</div><div class="rl">Read Domain WNS</div></div>
+          <div class="rc"><div class="rv">200 MHz</div><div class="rl">Target Clock</div></div>
+          <div class="rc"><div class="rv">64 / 63,400</div><div class="rl">Slice LUTs (0.10%)</div></div>
+          <div class="rc"><div class="rv">48 / 126,800</div><div class="rl">Slice Registers (0.04%)</div></div>
+          <div class="rc info"><div class="rv">1 / 135</div><div class="rl">Block RAM (&lt;1%)</div></div>
+        </div>
+        <div class="note">
+          Write critical path: write pointer → Gray encoder → full flag logic<br>
+          Read critical path: read pointer → Gray encoder → empty flag logic<br>
+          Registers used for pointer storage, 2-FF synchronizer stages, and control flags.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─── AXI STREAM ─── -->
+  <div class="card" id="c3">
+    <div class="card-hdr" data-card="c3">
+      <div class="card-hdr-l">
+        <div class="card-id">PRJ-003 &nbsp;·&nbsp; High-Speed Interface</div>
+        <h3>AXI4-Stream Master–Slave Pipeline</h3>
+        <div class="card-sub">TVALID/TREADY handshake &nbsp;·&nbsp; Backpressure &nbsp;·&nbsp; TLAST packet boundaries &nbsp;·&nbsp; Skid buffer</div>
+      </div>
+      <span class="card-ico">+</span>
+    </div>
+    <div class="card-body">
+
+      <div class="sub">
+        <div class="sub-ttl">Overview</div>
+        <p>AXI4-Stream master and slave with a registered pipeline stage between them.
+        The design correctly propagates backpressure, handles packet boundaries using TLAST,
+        and achieves full throughput (one transfer per cycle) under continuous TREADY assertion.</p>
+      </div>
+
+      <div class="sub">
+        <div class="sub-ttl">Handshake Protocol</div>
+        <p>A transfer occurs only when both TVALID (master-driven) and TREADY (slave-driven) are asserted simultaneously.
+        Per the AXI4-Stream spec, the master must not deassert TVALID once raised unless the transfer has completed.
+        Violating this causes silent pipeline stalls that are difficult to debug in simulation.</p>
+      </div>
+
+      <div class="sub">
+        <div class="sub-ttl">RTL — Master Interface</div>
+<pre><span class="kw">module</span> axis_master #(
+  <span class="kw">parameter</span> DATA_WIDTH = <span class="nm">32</span>
+) (
+  <span class="kw">input</span>  logic                  clk, rst_n,
+  <span class="kw">output</span> logic [DATA_WIDTH-<span class="nm">1</span>:<span class="nm">0</span>] m_axis_tdata,
+  <span class="kw">output</span> logic                  m_axis_tvalid,
+  <span class="kw">output</span> logic                  m_axis_tlast,
+  <span class="kw">input</span>  logic                  m_axis_tready
+);
+  <span class="cm">// Transfer completes only when both handshake signals high</span>
+  <span class="kw">assign</span> transfer = m_axis_tvalid & m_axis_tready;</pre>
+      </div>
+
+      <div class="sub">
+        <div class="sub-ttl">Backpressure — Skid Buffer</div>
+        <p>The pipeline stage between master and slave uses a skid buffer. When the slave deasserts TREADY,
+        the in-flight transfer is captured in a side register. The master sees TREADY deasserted one cycle
+        later (registered), giving it one extra cycle to hold valid data — preventing loss without requiring
+        the master to re-drive stale data.</p>
+      </div>
+
+      <div class="sub">
+        <div class="sub-ttl">Waveform — Handshake + Backpressure + TLAST</div>
+        <div class="wf">
+          <div class="wr">
+            <span class="wl">CLK</span>
+            <div class="wt"><svg viewBox="0 0 480 18" preserveAspectRatio="none">
+              <polyline points="0,16 0,2 24,2 24,16 48,16 48,2 72,2 72,16 96,16 96,2 120,2 120,16 144,16 144,2 168,2 168,16 192,16 192,2 216,2 216,16 240,16 240,2 264,2 264,16 288,16 288,2 312,2 312,16 336,16 336,2 360,2 360,16 384,16 384,2 408,2 408,16 432,16 432,2 456,2 456,16 480,16" fill="none" stroke="#4da6ff" stroke-width="1.4"/>
+            </svg></div>
+          </div>
+          <div class="wr">
+            <span class="wl">TVALID</span>
+            <div class="wt"><svg viewBox="0 0 480 18" preserveAspectRatio="none">
+              <polyline points="0,16 48,16 48,2 480,2" fill="none" stroke="#00e5a0" stroke-width="1.4"/>
+            </svg></div>
+          </div>
+          <div class="wr">
+            <span class="wl">TREADY</span>
+            <div class="wt"><svg viewBox="0 0 480 18" preserveAspectRatio="none">
+              <polyline points="0,2 168,2 168,16 264,16 264,2 480,2" fill="none" stroke="#ffb340" stroke-width="1.4"/>
+            </svg></div>
+          </div>
+          <div class="wr">
+            <span class="wl">TDATA</span>
+            <div class="wt"><svg viewBox="0 0 480 18" preserveAspectRatio="none">
+              <rect x="48" y="2" width="120" height="14" fill="rgba(0,229,160,.08)" stroke="#00e5a0" stroke-width="1"/>
+              <text x="108" y="12" fill="#00e5a0" font-size="8" text-anchor="middle" font-family="monospace">D0</text>
+              <rect x="168" y="2" width="96" height="14" fill="rgba(40,60,80,.4)" stroke="#334455" stroke-width="1"/>
+              <text x="216" y="12" fill="#445566" font-size="8" text-anchor="middle" font-family="monospace">stall</text>
+              <rect x="264" y="2" width="120" height="14" fill="rgba(0,229,160,.08)" stroke="#00e5a0" stroke-width="1"/>
+              <text x="324" y="12" fill="#00e5a0" font-size="8" text-anchor="middle" font-family="monospace">D1</text>
+              <rect x="384" y="2" width="96" height="14" fill="rgba(255,179,64,.12)" stroke="#ffb340" stroke-width="1"/>
+              <text x="432" y="12" fill="#ffb340" font-size="8" text-anchor="middle" font-family="monospace">D_LAST</text>
+            </svg></div>
+          </div>
+          <div class="wr">
+            <span class="wl">TLAST</span>
+            <div class="wt"><svg viewBox="0 0 480 18" preserveAspectRatio="none">
+              <polyline points="0,16 384,16 384,2 480,2" fill="none" stroke="#ffb340" stroke-width="1.4"/>
+            </svg></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <div class="sub-ttl">Modules</div>
+        <div class="mods">
+          <span class="mod">axis_master</span>
+          <span class="mod">axis_slave</span>
+          <span class="mod">axis_pipeline_reg</span>
+          <span class="mod">skid_buffer</span>
+          <span class="mod">axis_tb</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SKILLS ═══════════ -->
+<section id="skills">
+  <div class="sec-hdr">
+    <span class="sec-num">// 02</span>
+    <h2>Skills &amp; Tools</h2>
+    <div class="sec-line"></div>
+  </div>
+  <div class="sg-grid" id="sg">
+
+    <div class="sg">
+      <div class="sg-ttl">HDL Languages</div>
+      <div class="si"><span class="sn">Verilog</span><div class="sb"><div class="sf" data-w="88"></div></div><span class="sp">88%</span></div>
+      <div class="si"><span class="sn">SystemVerilog</span><div class="sb"><div class="sf" data-w="72"></div></div><span class="sp">72%</span></div>
+    </div>
+
+    <div class="sg">
+      <div class="sg-ttl">Design Areas</div>
+      <div class="si"><span class="sn">RTL Design</span><div class="sb"><div class="sf" data-w="85"></div></div><span class="sp">85%</span></div>
+      <div class="si"><span class="sn">CDC Design</span><div class="sb"><div class="sf" data-w="70"></div></div><span class="sp">70%</span></div>
+      <div class="si"><span class="sn">FSM Design</span><div class="sb"><div class="sf" data-w="78"></div></div><span class="sp">78%</span></div>
+      <div class="si"><span class="sn">Processor Arch</span><div class="sb"><div class="sf" data-w="68"></div></div><span class="sp">68%</span></div>
+    </div>
+
+    <div class="sg">
+      <div class="sg-ttl">EDA Tools</div>
+      <div class="si"><span class="sn">Vivado</span><div class="sb"><div class="sf" data-w="82"></div></div><span class="sp">82%</span></div>
+      <div class="si"><span class="sn">ModelSim</span><div class="sb"><div class="sf" data-w="70"></div></div><span class="sp">70%</span></div>
+      <div class="si"><span class="sn">GTKWave</span><div class="sb"><div class="sf" data-w="75"></div></div><span class="sp">75%</span></div>
+    </div>
+
+    <div class="sg">
+      <div class="sg-ttl">Verification</div>
+      <div class="si"><span class="sn">Testbenches</span><div class="sb"><div class="sf" data-w="80"></div></div><span class="sp">80%</span></div>
+      <div class="si"><span class="sn">Timing Analysis</span><div class="sb"><div class="sf" data-w="76"></div></div><span class="sp">76%</span></div>
+      <div class="si"><span class="sn">SV Assertions</span><div class="sb"><div class="sf" data-w="65"></div></div><span class="sp">65%</span></div>
+      <div class="si"><span class="sn">Waveform Debug</span><div class="sb"><div class="sf" data-w="80"></div></div><span class="sp">80%</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════ ABOUT ═══════════ -->
+<section id="about">
+  <div class="sec-hdr">
+    <span class="sec-num">// 03</span>
+    <h2>About</h2>
+    <div class="sec-line"></div>
+  </div>
+  <div class="ag">
+    <div class="ab">
+      <div class="ab-ttl">Focus</div>
+      <p>RTL design for high-performance digital systems. My work covers RISC-V processor implementation,
+      CDC-safe interfaces, and AXI-based pipelines — the same building blocks inside AMD, Intel, and NVIDIA silicon.</p>
+    </div>
+    <div class="ab">
+      <div class="ab-ttl">Approach</div>
+      <p>Every design I write targets real synthesis. I verify timing closure with Vivado reports,
+      document waveform evidence, and explain architectural decisions. RTL without timing data is incomplete work.</p>
+    </div>
+    <div class="ab">
+      <div class="ab-ttl">Currently Exploring</div>
+      <p>Pipelined RISC-V RV32I core with hazard detection and data forwarding unit.
+      AXI4-Lite register interface for FPGA peripheral control.</p>
+    </div>
+    <div class="ab">
+      <div class="ab-ttl">Background</div>
+      <p>Electronics &amp; Communication Engineering. Strong foundation in digital logic,
+      VLSI design, and computer architecture. Hands-on with Artix-7 FPGA platform using Vivado.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CONTACT ═══════════ -->
+<section id="contact">
+  <div class="sec-hdr">
+    <span class="sec-num">// 04</span>
+    <h2>Contact</h2>
+    <div class="sec-line"></div>
+  </div>
+  <p style="font-family:var(--sans);font-size:13px;color:var(--muted);margin-bottom:20px;">
+    Open to RTL Design Engineer and Digital Design Engineer roles. Reach out via GitHub or email.
+  </p>
+  <div class="cl">
+    <a href="https://github.com/narsimharaj-mallela" class="ca" target="_blank">⌥ &nbsp;GitHub</a>
+    <a href="/cdn-cgi/l/email-protection#94faf5e6e7fdf9fcf5e6f5fed4f1f9f5fdf8baf7fbf9" class="ca">✉ &nbsp;<span class="__cf_email__" data-cfemail="d0beb1a2a3b9bdb8b1a2b1ba90b5bdb1b9bcfeb3bfbd">[email&#160;protected]</span></a>
+    <a href="https://linkedin.com/in/narsimharaj-mallela" class="ca" target="_blank">⊞ &nbsp;LinkedIn</a>
+  </div>
+</section>
+
+<footer>
+  <span>Narsimharaj Mallela — RTL Design Engineer</span>
+  <span>Vivado · Artix-7 · SystemVerilog</span>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+  // Card toggles via data attributes
+  document.querySelectorAll('[data-card]').forEach(function(hdr) {
+    hdr.addEventListener('click', function() {
+      var id = hdr.getAttribute('data-card');
+      var card = document.getElementById(id);
+      if (card) card.classList.toggle('open');
+    });
+  });
+
+  // Animate skill bars on scroll
+  var io = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (!entry.isIntersecting) return;
+      entry.target.querySelectorAll('.sf').forEach(function(el, i) {
+        var w = el.getAttribute('data-w');
+        setTimeout(function() {
+          el.style.transition = 'transform 0.9s ' + (i * 0.1) + 's cubic-bezier(.4,0,.2,1)';
+          el.style.transform = 'scaleX(' + (w / 100) + ')';
+        }, 80);
+      });
+      io.unobserve(entry.target);
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('.sg-grid').forEach(function(el) {
+    io.observe(el);
+  });
+
+});
+</script>
+</body>
+</html>
